@@ -9,6 +9,6 @@
  * The Ovh plugin.
  * @package Omeka\Plugins\Ovh
  */
-class OvhPlugin extends Omeka_Plugin_AbstractPlugin
+class OmekaOnOvhPlugin extends Omeka_Plugin_AbstractPlugin
 {
 }

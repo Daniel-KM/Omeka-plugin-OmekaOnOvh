@@ -13,7 +13,7 @@
  *
  * @package Omeka\File\Derivative\Strategy
  */
-class Ovh_ExternalImageMagick
+class OmekaOnOvh_ExternalImageMagick
     extends Omeka_File_Derivative_AbstractStrategy
 {
     const IMAGEMAGICK_CONVERT_COMMAND = 'convert';
