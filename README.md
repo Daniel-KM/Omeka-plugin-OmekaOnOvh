@@ -83,7 +83,7 @@ Copyright
 [Omeka On Ovh]: https://github.com/Daniel-KM/OmekaOnOvh
 [Omeka]: https://omeka.org "Omeka.org"
 [bibliothèque des phares]: http://bibliothequedesphares.fr
-[CeCILL v2.1]: http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
+[CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
 [FSF]: https://www.fsf.org
 [OSI]: http://opensource.org

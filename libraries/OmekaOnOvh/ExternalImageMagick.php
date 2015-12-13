@@ -48,6 +48,9 @@ class OmekaOnOvh_ExternalImageMagick
             escapeshellarg($destPath)
         ));
 
+        $status = null;
+        $output = null;
+        $errors = null;
         self::executeCommand($cmd, $status, $output, $errors);
 
 /*
@@ -188,6 +191,9 @@ return true;
     {
         // Use the "which" command to auto-detect the path to ImageMagick
         $cmd = 'which ' . self::IMAGEMAGICK_CONVERT_COMMAND;
+        $status = null;
+        $output = null;
+        $errors = null;
         try {
             self::executeCommand($cmd, $status, $output, $errors);
 /*
