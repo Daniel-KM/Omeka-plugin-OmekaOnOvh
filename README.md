@@ -2,12 +2,9 @@ Omeka On OVH (extension Omeka)
 ==============================
 
 
-Sommaire
--------
-
-[Omeka On Ovh] est une extension pour [Omeka] permet d'utiliser le serveur partagé
-d'OVH et d'y créer les images dérivées. Il ajoute simplement une bibliothèque. Il
-est utilisé pour la [bibliothèque des phares].
+[Omeka On Ovh] est une extension pour [Omeka] qui permet d'utiliser le serveur
+partagé d'OVH et d'y créer les images dérivées. Il ajoute simplement une
+bibliothèque intermédiaire. Il est utilisé pour la [bibliothèque des phares].
 
 OVH changeant régulièrement sa configuration (au moins quatre fois depuis 2012),
 sans avertissement, les paramètres doivent être régulièrement mis à jour.
@@ -20,10 +17,13 @@ Uncompress files and rename plugin folder "OmekaOnOvh".
 
 Then install it like any other Omeka plugin. The plugin has no configuration.
 
-Dans application/config/config.ini, ajouter ou remplacer par :
+Dans application/config/config.ini, ajouter ou remplacer les paramètres de
+création des fichiers dérivés par :
 
+```
 fileDerivatives.strategy = "OmekaOnOvh_ExternalImageMagick"
 fileDerivatives.strategyOptions.convert_path = "convert"
+```
 
 
 Warning
