@@ -42,7 +42,7 @@ class OmekaOnOvh_ExternalImageMagick
         $convertArgs = $this->_getConvertArgs($type, $sizeConstraint);
         $page = (int) $this->getOption('page', 0);
         $cmd = join(' ', array(
-            escapeshellcmd($convertPath),
+            escapeshellarg($convertPath),
             escapeshellarg($sourcePath . '[' . $page . ']'),
             $convertArgs,
             escapeshellarg($destPath)
@@ -87,14 +87,15 @@ class OmekaOnOvh_ExternalImageMagick
             return $this->_convertPath;
         }
 
+        $path = $this->getOption('path_to_convert');
 // Adaptation pour OVH.
-        $this->_convertPath = $this->getOption('convert_path');
-//        if ($path && ($pathClean = realpath($path)) && is_dir($pathClean)) {
-        // TODO Add a check.
-        if ($this->_convertPath) {
-//            $pathClean = rtrim($pathClean, DIRECTORY_SEPARATOR);
-//            $this->_convertPath = $pathClean . DIRECTORY_SEPARATOR . self::IMAGEMAGICK_CONVERT_COMMAND;
-            return $this->_convertPath;
+if ($path) {
+    $this->_convertPath = $path;
+    return $this->_convertPath;
+}
+        if ($path && ($pathClean = realpath($path)) && is_dir($pathClean)) {
+            $pathClean = rtrim($pathClean, DIRECTORY_SEPARATOR);
+            $this->_convertPath = $pathClean . DIRECTORY_SEPARATOR . self::IMAGEMAGICK_CONVERT_COMMAND;
         } else {
             throw new Omeka_File_Derivative_Exception('ImageMagick is not properly configured: invalid directory given for the ImageMagick command!');
         }
@@ -112,13 +113,19 @@ class OmekaOnOvh_ExternalImageMagick
         $version = $this->getOption('version', '0');
 
         if ($type != 'square_thumbnail') {
-            return '-background white -flatten -thumbnail ' . escapeshellarg("{$constraint}x{$constraint}>");
+            $args = array(
+                '-background white',
+                '+repage',
+                '-flatten',
+                '-thumbnail ' . escapeshellarg("{$constraint}x{$constraint}>")
+            );
         } else {
             $gravity = $this->getOption('gravity', 'Center');
             // Native square thumbnail resize requires at least version 6.3.8-3.
             if (version_compare($version, '6.3.8-3', '>=')) {
                 $args = array(
                     '-background white',
+                    '+repage',
                     '-flatten',
                     '-thumbnail ' . escapeshellarg("{$constraint}x{$constraint}^"),
                     '-gravity ' . escapeshellarg($gravity),
@@ -127,18 +134,23 @@ class OmekaOnOvh_ExternalImageMagick
                 );
             } else {
                 $args = array(
-                    '-thumbnail ' . escapeshellarg('x' . $constraint*2),
-                    '-resize ' . escapeshellarg($constraint*2 . 'x<'),
+                    '-thumbnail ' . escapeshellarg('x' . $constraint * 2),
+                    '-resize ' . escapeshellarg($constraint * 2 . 'x<'),
                     '-resize 50%',
                     '-background white',
+                    '+repage',
                     '-flatten',
                     '-gravity ' . escapeshellarg($gravity),
                     '-crop ' . escapeshellarg("{$constraint}x{$constraint}+0+0"),
                     '+repage'
                 );
             }
-            return join (' ', $args);
         }
+
+        if ($this->getOption('autoOrient', false)) {
+            array_unshift($args, '-auto-orient');
+        }
+        return join(' ', $args);
     }
 
     /**
@@ -146,7 +158,7 @@ class OmekaOnOvh_ExternalImageMagick
      * The convert binary must be within the directory and executable.
      *
      * @param string
-     * @return boolean
+     * @return bool
      */
     public static function isValidImageMagickPath($dirToIm)
     {
@@ -166,7 +178,7 @@ class OmekaOnOvh_ExternalImageMagick
 
         // Attempt to run the ImageMagick binary with the version argument
         // If you try to run it without any arguments, it returns an error code
-        $cmd = $convertPath . ' -version';
+        $cmd = escapeshellarg($convertPath) . ' -version';
 
         self::executeCommand($cmd, $status, $output, $errors);
 

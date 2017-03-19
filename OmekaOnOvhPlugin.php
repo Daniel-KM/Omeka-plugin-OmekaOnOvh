@@ -2,7 +2,7 @@
 /**
  * Adaptation pour que le serveur partagé d'OVH puisse créer les fichiers dérivés.
  *
- * @copyright Copyright Daniel Berthereau, 2014-2015
+ * @copyright Copyright Daniel Berthereau, 2014-2017
  */
 
 /**
